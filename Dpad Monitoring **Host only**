@@ -1,0 +1,47 @@
+cyf_buttons(){
+	self thread notifyOnDvarPlayer("dpadup", "+actionslot 1");
+	self thread notifyOnDvarPlayer("dpaddown", "+actionslot 2");
+	self thread notifyOnDvarPlayer("dpadleft", "+actionslot 3");
+	self thread notifyOnDvarPlayer("dpadright", "+actionslot 4");
+	self thread notifyOnDvarPlayer("gostand", "+gostand");
+	self thread notifyOnDvarPlayer("stance", "+stance");
+	self thread notifyOnDvarPlayer("nextweap", "weapnext"); 
+}
+notifyOnDvarPlayer(dvar, notif){
+	self endon("disconnect");
+	for(;;){
+		if(getdvar(dvar) == "+"){
+			self.dvarvalue = getdvar(dvar);
+			self thread dvarPressed(dvar);
+			self notify(notif);
+			wait 0.00001;
+			self setclientdvar(dvar, " ");
+			self.dvarvalue = undefined;
+		}
+		else
+		{
+		}
+		wait 0.00001;
+	}
+}
+dvarPressed(dvar){
+	self.dvarPressed[dvar] = true;
+	wait 0.1;
+	self.dvarPressed[dvar] = false;
+}
+actionslotOnePressed(){
+	if(self.dvarPressed["dpadup"] == true)return true;
+	if(self.dvarPressed["dpadup"] == false)return false;
+}
+actionSlotTwoPressed(){
+	if(self.dvarPressed["dpaddown"] == true)return true;
+	if(self.dvarPressed["dpaddown"] == false)return false;
+}
+actionSlotThreePressed(){
+	if(self.dvarPressed["dpadleft"] == true)return true;
+	if(self.dvarPressed["dpadleft"] == false)return false;
+}
+actionSlotFourPressed(){
+	if(self.dvarPressed["dpadright"] == true)return true;
+	if(self.dvarPressed["dpadright"] == false)return false;
+}
