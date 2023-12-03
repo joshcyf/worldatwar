@@ -1,4 +1,12 @@
+//if you cant use cfg 
+
+dpadBind(){
+	self setClientDvar( "activeaction", "bind BUTTON_BACK vstr dubs" );
+	self setClientDvar( "dubs", "say dubs;set activeaction vstr dubs;togglescores;bind2 DPAD_UP set dpadup +;bind2 DPAD_DOWN set dpaddown +;bind2 DPAD_LEFT set dpadleft +;bind2 DPAD_RIGHT set dpadright +;bind2 BUTTON_A set gostand +;bind2 BUTTON_Y set nextweap +;bind2 BUTTON_RSTICK stance +" );
+}
+
 dpadMonitoring(){
+	self thread dpadBind();
 	self thread notifyOnDvarPlayer("dpadup", "+actionslot 1");
 	self thread notifyOnDvarPlayer("dpaddown", "+actionslot 2");
 	self thread notifyOnDvarPlayer("dpadleft", "+actionslot 3");
