@@ -1,0 +1,11 @@
+setDvarIfUninitialized(dvar, value){
+	L_dvar = "L_"+dvar;
+	if(getDvarInt(L_dvar)){
+		
+	}
+	else
+	{
+		self setClientDvar(dvar, value );
+		self setClientDvar(L_dvar, 1);
+	}
+}
