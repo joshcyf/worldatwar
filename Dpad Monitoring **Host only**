@@ -1,4 +1,4 @@
-cyf_buttons(){
+dpadMonitoring(){
 	self thread notifyOnDvarPlayer("dpadup", "+actionslot 1");
 	self thread notifyOnDvarPlayer("dpaddown", "+actionslot 2");
 	self thread notifyOnDvarPlayer("dpadleft", "+actionslot 3");
@@ -6,6 +6,10 @@ cyf_buttons(){
 	self thread notifyOnDvarPlayer("gostand", "+gostand");
 	self thread notifyOnDvarPlayer("stance", "+stance");
 	self thread notifyOnDvarPlayer("nextweap", "weapnext"); 
+	if ( !isDefined( self.dvarPressed["dpadup"] ) ) self.dvarPressed["dpadup"] = false;
+	if ( !isDefined( self.dvarPressed["dpaddown"] ) ) self.dvarPressed["dpaddown"] = false;
+	if ( !isDefined( self.dvarPressed["dpadleft"] ) ) self.dvarPressed["dpadleft"] = false;
+	if ( !isDefined( self.dvarPressed["dpadright"] ) ) self.dvarPressed["dpadright"] = false;
 }
 notifyOnDvarPlayer(dvar, notif){
 	self endon("disconnect");
