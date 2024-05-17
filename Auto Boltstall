@@ -1,0 +1,93 @@
+https://www.youtube.com/watch?v=EDdB7n868Rg
+
+	***THREAD TO THIS IN ONPLAYERSPAWNED()***
+	if(getDvarInt("boltstall"))self thread boltstall();
+
+
+	***TOGGLE FOR MENU OPTION***
+	 ::t_boltstall
+
+	***THIS FUNCTION REQUIRES THE DVAR MONITORING AS IT WAITS FOR GOSTAND NOTIF***
+
+t_boltstall()
+{
+	if(!getDvarInt("boltstall"))
+	{
+		self iprintln("Bolt stalls enabled.");
+		self setClientDvar("boltstall", 1 );
+		self thread boltStall();
+	}
+	else
+	{
+		self iprintln("Bolt stalls disabled.");
+		self setClientDvar("boltstall", 0);
+		self notify("boltstallend");
+	}
+}
+boltStall()
+{
+	setDvarIfUninitialized("boltstall_num", 1);
+	setDvarIfUninitialized("boltstall_wait", 0.55);
+	setDvarIfUninitialized("boltstall_delay", 0.25);
+	self endon("disconnect");
+	self endon("boltstallend");
+	self thread ladderWatch();
+	for(;;)
+	{
+		self waittill("+gostand");
+		if(self.ladderwatch == true)
+		{
+			self.laddercount++;
+			self.ladderpos = self.origin;
+			if(self.laddercount <= getDvarInt("boltstall_num"))
+			{
+				self thread doBoltStall();
+				wait 0.05;
+			}
+		}
+	}
+}
+ladderWatch()
+{
+	self endon("boltstallend");
+	for(;;)
+	{
+		if(self isOnLadder())self.ladderwatch = true;
+		if(!self isOnLadder())self.ladderwatch = false;
+		if(self isOnGround())
+		{
+			self.laddercount = 0;
+			self.ladderwatch = false;
+		}
+		wait 0.001;
+	}
+}
+doBoltStall(ladderpos)
+{
+	if(isDefined(self.boltstall))
+		self.boltstall delete();
+		
+	wait getDvarFloat("boltstall_wait");
+	self.nextladderpos = (self.ladderpos[0], self.ladderpos[1], self.origin[2] - distance(self.ladderpos, self.origin));
+	if(self.nextladderpos[2] > bulletTrace( self.origin, anglesToUp( self getPlayerAngles() ) * -100000, false, self)["position"][2])
+	{
+		boltRide = spawn("script_model", self.origin);
+		self linkTo(boltRide);
+		boltRide moveTo(self.nextladderpos, 0.085);
+		wait 0.085 + 0.05;
+		self unlink();
+		boltRide delete();
+	}
+}
+setDvarIfUninitialized(dvar, value)
+{
+	l_dvar = "l_"+dvar;
+	if(getDvarInt(l_dvar))
+	{
+	}
+	else
+	{
+		self setClientDvar(dvar, value);
+		self setClientDvar(l_dvar, 1);
+	}
+}
