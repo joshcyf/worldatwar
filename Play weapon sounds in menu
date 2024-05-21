@@ -1,0 +1,100 @@
+"soundMenu", "Toggle weapon fire sound",::weaponSoundVar, "weaponSoundShoot");
+"soundMenu", "Toggle headshot sound",::weaponSoundVar, "weaponSoundHeadshot");
+"soundMenu", "Toggle Hitmarker sound",::weaponSoundVar, "weaponSoundHitmarker");
+"soundMenu", "Toggle weapon reload sound",::weaponSoundVar, "weaponSoundReload");
+"soundMenu", "Melee", ::cyfWeaponSounds, "melee");
+"soundMenu", "Dryfire", ::cyfWeaponSounds, "dryfire");
+"soundMenu", "cyfWeaponSounds", ::cyfWeaponSounds);
+
+cyfWeaponSounds(weapon)
+{
+	if(!isDefined(weapon))weapon = undefined;
+	if(!isDefined(self.cyfWeaponSoundsShoot))self.cyfWeaponSoundsShoot = 1;
+	if(!isDefined(self.cyfWeaponSoundsHeadshot))self.cyfWeaponSoundsHeadshot = 1;
+	if(!isDefined(self.cyfWeaponSoundsHitmarker))self.cyfWeaponSoundsHitmarker = 1;
+	if(!isDefined(self.cyfWeaponSoundsReload))self.cyfWeaponSoundsReload = 1;
+	if(self.cyfWeaponSoundsShoot)self thread weapFireSoundCW(weapon);
+	if(self.cyfWeaponSoundsHeadshot)self playsound("bullet_impact_headshot_2");
+	if(self.cyfWeaponSoundsReload)self thread cyfReloadSound();
+	if(self.cyfWeaponSoundsHitmarker)self thread fakeHitmarker();
+}
+weapFireSoundCW(weapon)
+{
+	if(!isDefined(weapon))
+		weapon = cw();
+	baseW = strTok(weapon, "_");
+	if(!isSubStr(weapon, "_scoped"))
+	{
+		if(baseW[0] == "shotgun")
+			self playSound("weap_shotgun_fire_pump_plr");
+		if(baseW[0] == "gewehr43")
+			self playSound("weap_g43_fire_plr");
+		if(baseW[0] == "stg44")
+			self playSound("weap_mp44_fire_plr");
+		if(baseW[0] == "mosinrifle")
+			self playSound("weap_mosinnagant_fire_plr_snp");
+		if(baseW[0] == "doublebarreledshotgun")
+			self playSound("weap_dbshot_fire_plr");
+		if(baseW[0] == "gl")
+			self playSound("weap_m1gren_fire_plr");
+		if(baseW[0] == "m1carbine")
+			self playsound("weap_carbine_fire_plr");
+		if(weapon == "melee")
+			self playsound("melee_swing_plr");
+		if(weapon == "dryfire")
+			self playsound("dryfire_rifle_plr");
+		else self playSound("weap_" + baseW[0] + "_fire_plr");
+	}
+	else if(isSubStr(weapon, "_scoped"))
+	{
+		if(baseW[0] == "m1garand")
+			self playSound("weap_m1garand_lastshot_plr");
+		if(baseW[0] == "type99rifle")
+      self playSound("weap_arisaka_fire_plr_snp");
+		else if(baseW[0] == "mosinrifle")
+			self playSound("weap_mosinnagant_fire_plr_snp");
+		else self playSound("weap_" + baseW[0] + "_fire_plr_snp");
+	}
+}
+weaponSoundVar(var)
+{
+  switch(va)
+  {
+    case "weaponSoundReload":
+		{
+			if(!self.cyfWeaponSoundsReload)
+				self.cyfWeaponSoundsReload = 1;
+			else
+				self.cyfWeaponSoundsReload = 0;
+		}
+		self iPrintln("Reload sound "+bool_2_text(self.cyfWeaponSoundsReload));
+		break;
+		case "weaponSoundShoot":
+		{
+			if(!self.cyfWeaponSoundsShoot)
+				self.cyfWeaponSoundsShoot = 1;
+			else
+				self.cyfWeaponSoundsShoot = 0;
+		}
+		self iPrintln("Fire sound "+bool_2_text(self.cyfWeaponSoundsShoot));
+		break;
+		case "weaponSoundHitmarker":
+		{
+			if(!self.cyfWeaponSoundsHitmarker)
+				self.cyfWeaponSoundsHitmarker = 1;
+			else
+				self.cyfWeaponSoundsHitmarker = 0;
+		}
+		self iPrintln("Hitmarker sound "+bool_2_text(self.cyfWeaponSoundsHitmarker));
+		break;
+		case "weaponSoundHeadshot":
+		{
+			if(!self.cyfWeaponSoundsHeadshot)
+				self.cyfWeaponSoundsHeadshot = 1;
+			else
+				self.cyfWeaponSoundsHeadshot = 0;
+		}
+		self iPrintln("Headshot sound "+bool_2_text(self.cyfWeaponSoundsHeadshot));
+		break;
+	}
+}
