@@ -1,4 +1,7 @@
 level.cyfShaders = strTok("waypoint_bombsquad;specialty_armorvest;specialty_boost;specialty_bulletaccuracy;specialty_bulletdamage;specialty_bulletpenetration;specialty_explosivedamage;specialty_exposeenemy;specialty_extraammo;specialty_fastreload;specialty_fireproof;specialty_gas_mask;specialty_gpsjammer;specialty_greased_barrings;specialty_grenadepulldeath;specialty_holdbreath;specialty_leadfoot;specialty_locked;specialty_locked_big;specialty_locked_challenge;specialty_longersprint;specialty_new;specialty_null;specialty_ordinance;specialty_pin_back;specialty_pistoldeath;specialty_quieter;specialty_rof;specialty_shades;specialty_specialgrenade;specialty_twoprimaries;specialty_water_cooled;specialty_weapon_c4;specialty_weapon_claymore;stance_crouch;stance_prone;stance_stand;stance_swim;rank_2ndlt1;rank_maj1;rank_ltcol1;rank_col1;rank_bgen1;rank_majgen1;rank_ltgen2;rank_comm1;hudicon_japanese_war;hudicon_american_ctf_flag_carry;hud_momentum_notification_blitzkrieg;hud_squad_symbol;waypoint_second_chance", ";" );
+	for( i = 0; i < level.cyfShaders.size; i++ )
+		precacheShader(level.cyfShaders[i]); 
+
 toggle_spawnpingmarker()
 {
 	if(!self.spawnedping)
