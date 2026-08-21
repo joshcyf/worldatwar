@@ -1,0 +1,13 @@
+toggle_vehicle_usage()
+{
+	if(!self.disallowVehicleUsage)
+	{
+		self.disallowVehicleUsage = true;
+		self sayAll("^1Vehicle usage not allowed!");
+	}
+	else
+	{
+		self.disallowVehicleUsage = false;
+		self sayAll("^2Vehicle usage allowed!");
+	}
+}
